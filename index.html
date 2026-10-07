@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discovery Equation Lab</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#0f172a;
+    color:white;
+    text-align:center;
+    padding:40px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:#1e293b;
+    padding:30px;
+    border-radius:20px;
+}
+
+h1{
+    color:#38bdf8;
+}
+
+.slider-group{
+    margin:20px 0;
+}
+
+input[type=range]{
+    width:100%;
+}
+
+.result{
+    margin-top:30px;
+    font-size:28px;
+    font-weight:bold;
+    color:#22c55e;
+}
+
+.formula{
+    margin-bottom:30px;
+    font-size:22px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Discovery Equation Lab</h1>
+
+<div class="formula">
+D = (Q × P × K) / A
+</div>
+
+<div class="slider-group">
+<label>Questions (Q): <span id="qValue">50</span></label>
+<input type="range" min="1" max="100" value="50" id="q">
+</div>
+
+<div class="slider-group">
+<label>Persistence (P): <span id="pValue">50</span></label>
+<input type="range" min="1" max="100" value="50" id="p">
+</div>
+
+<div class="slider-group">
+<label>Knowledge (K): <span id="kValue">50</span></label>
+<input type="range" min="1" max="100" value="50" id="k">
+</div>
+
+<div class="slider-group">
+<label>Assumptions (A): <span id="aValue">50</span></label>
+<input type="range" min="1" max="100" value="50" id="a">
+</div>
+
+<div class="result">
+Discovery Score:
+<span id="result">2500</span>
+</div>
+
+</div>
+
+<script>
+
+const q = document.getElementById("q");
+const p = document.getElementById("p");
+const k = document.getElementById("k");
+const a = document.getElementById("a");
+
+function calculate(){
+
+document.getElementById("qValue").textContent = q.value;
+document.getElementById("pValue").textContent = p.value;
+document.getElementById("kValue").textContent = k.value;
+document.getElementById("aValue").textContent = a.value;
+
+let score =
+(q.value * p.value * k.value) / a.value;
+
+document.getElementById("result").textContent =
+Math.round(score);
+
+}
+
+q.addEventListener("input", calculate);
+p.addEventListener("input", calculate);
+k.addEventListener("input", calculate);
+a.addEventListener("input", calculate);
+
+calculate();
+
+</script>
+
+</body>
+</html>

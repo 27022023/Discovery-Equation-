@@ -1,118 +1,530 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Discovery Equation Lab</title>
+
+<title>Discovery Lab</title>
+
+https://cdn.jsdelivr.net/npm/chart.jsscript>
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
 body{
-    font-family:Arial,sans-serif;
-    background:#0f172a;
-    color:white;
-    text-align:center;
-    padding:40px;
+font-family:Arial,sans-serif;
+background:#0f172a;
+color:white;
+padding:30px;
 }
 
 .container{
-    max-width:700px;
-    margin:auto;
-    background:#1e293b;
-    padding:30px;
-    border-radius:20px;
+max-width:1100px;
+margin:auto;
 }
 
 h1{
-    color:#38bdf8;
+text-align:center;
+font-size:3rem;
+color:#38bdf8;
+margin-bottom:10px;
 }
 
-.slider-group{
-    margin:20px 0;
-}
-
-input[type=range]{
-    width:100%;
-}
-
-.result{
-    margin-top:30px;
-    font-size:28px;
-    font-weight:bold;
-    color:#22c55e;
+.subtitle{
+text-align:center;
+opacity:.8;
+margin-bottom:30px;
 }
 
 .formula{
-    margin-bottom:30px;
-    font-size:22px;
+text-align:center;
+font-size:1.5rem;
+margin-bottom:40px;
+color:#22c55e;
 }
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:35px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+.card h3{
+margin-bottom:10px;
+color:#60a5fa;
+}
+
+.big{
+font-size:2rem;
+font-weight:bold;
+}
+
+.section{
+background:#1e293b;
+padding:25px;
+border-radius:12px;
+margin-bottom:25px;
+}
+
+.slider-group{
+margin:25px 0;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+}
+
+input[type=range]{
+width:100%;
+}
+
+.result{
+text-align:center;
+font-size:2.5rem;
+font-weight:bold;
+color:#22c55e;
+margin-top:20px;
+}
+
+button{
+background:#38bdf8;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+margin:10px 5px;
+}
+
+button:hover{
+opacity:.9;
+}
+
+textarea{
+width:100%;
+height:120px;
+margin-top:10px;
+padding:10px;
+border-radius:8px;
+border:none;
+}
+
+canvas{
+background:white;
+border-radius:12px;
+padding:10px;
+}
+
+.challenge{
+margin-top:15px;
+font-size:1.1rem;
+color:#facc15;
+font-weight:bold;
+}
+
+footer{
+text-align:center;
+margin-top:40px;
+opacity:.6;
+}
+
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
-<h1>Discovery Equation Lab</h1>
+<h1>🔬 Discovery Lab</h1>
+
+<p class="subtitle">
+Experimental Research Platform
+</p>
 
 <div class="formula">
 D = (Q × P × K) / A
 </div>
 
+<div class="dashboard">
+
+<div class="card">
+<h3>📈 Current Score</h3>
+<div class="big" id="result">0</div>
+</div>
+
+<div class="card">
+<h3>🏆 Personal Best</h3>
+<div class="big" id="bestScore">0</div>
+</div>
+
+<div class="card">
+<h3>🔥 Discovery Streak</h3>
+<div class="big" id="streak">0</div>
+</div>
+
+<div class="card">
+<h3>🎓 Rank</h3>
+<div class="big" id="rank">Explorer</div>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Discovery Equation Inputs</h2>
+
 <div class="slider-group">
-<label>Questions (Q): <span id="qValue">50</span></label>
+<label>
+Questions (Q):
+<span id="qValue">50</span>
+</label>
 <input type="range" min="1" max="100" value="50" id="q">
 </div>
 
 <div class="slider-group">
-<label>Persistence (P): <span id="pValue">50</span></label>
+<label>
+Persistence (P):
+<span id="pValue">50</span>
+</label>
 <input type="range" min="1" max="100" value="50" id="p">
 </div>
 
 <div class="slider-group">
-<label>Knowledge (K): <span id="kValue">50</span></label>
+<label>
+Knowledge (K):
+<span id="kValue">50</span>
+</label>
 <input type="range" min="1" max="100" value="50" id="k">
 </div>
 
 <div class="slider-group">
-<label>Assumptions (A): <span id="aValue">50</span></label>
+<label>
+Assumptions (A):
+<span id="aValue">50</span>
+</label>
 <input type="range" min="1" max="100" value="50" id="a">
 </div>
 
-<div class="result">
-Discovery Score:
-<span id="result">2500</span>
+<div class="result" id="scoreDisplay">
+2500
 </div>
+
+</div>
+
+<div class="section">
+
+<h2>📅 Daily Tracking</h2>
+
+<button onclick="saveToday()">
+Save Today's Score
+</button>
+
+<button onclick="downloadData()">
+Export Research Data
+</button>
+
+</div>
+
+<div class="section">
+
+<h2>📊 Discovery Graph</h2>
+
+<canvas id="historyChart"></canvas>
+
+</div>
+
+<div class="section">
+
+<h2>🧠 Assumption Challenge Engine</h2>
+
+<button onclick="challengeAssumption()">
+Challenge My Thinking
+</button>
+
+<div id="challenge" class="challenge">
+Click Above
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>📓 Discovery Journal</h2>
+
+<textarea
+id="journal"
+placeholder="What did you discover today?">
+</textarea>
+
+<button onclick="saveJournal()">
+Save Journal
+</button>
+
+</div>
+
+<footer>
+Discovery Lab v2
+</footer>
 
 </div>
 
 <script>
+
+let chart;
+let currentScore = 0;
 
 const q = document.getElementById("q");
 const p = document.getElementById("p");
 const k = document.getElementById("k");
 const a = document.getElementById("a");
 
-function calculate(){
+function getRank(score){
 
-document.getElementById("qValue").textContent = q.value;
-document.getElementById("pValue").textContent = p.value;
-document.getElementById("kValue").textContent = k.value;
-document.getElementById("aValue").textContent = a.value;
+if(score < 5000)
+return "Explorer";
 
-let score =
-(q.value * p.value * k.value) / a.value;
+if(score < 15000)
+return "Researcher";
 
-document.getElementById("result").textContent =
-Math.round(score);
+if(score < 40000)
+return "Inventor";
 
+if(score < 100000)
+return "Visionary";
+
+return "Theory Builder";
 }
 
-q.addEventListener("input", calculate);
-p.addEventListener("input", calculate);
-k.addEventListener("input", calculate);
-a.addEventListener("input", calculate);
+function calculate(){
+
+document.getElementById("qValue").innerText=q.value;
+document.getElementById("pValue").innerText=p.value;
+document.getElementById("kValue").innerText=k.value;
+document.getElementById("aValue").innerText=a.value;
+
+currentScore=
+(q.value*p.value*k.value)/a.value;
+
+const rounded=
+Math.round(currentScore);
+
+document.getElementById("result").innerText=
+rounded;
+
+document.getElementById("scoreDisplay").innerText=
+rounded;
+
+document.getElementById("rank").innerText=
+getRank(rounded);
+
+updateBest(rounded);
+}
+
+function updateBest(score){
+
+let personalBest=
+localStorage.getItem("personalBest") || 0;
+
+personalBest=
+Number(personalBest);
+
+if(score>personalBest){
+
+localStorage.setItem(
+"personalBest",
+score
+);
+
+personalBest=score;
+}
+
+document.getElementById("bestScore")
+.innerText=personalBest;
+}
+
+function saveToday(){
+
+const today=
+new Date().toISOString().split("T")[0];
+
+const history=
+JSON.parse(
+localStorage.getItem("history")
+)|| {};
+
+history[today]=Math.round(currentScore);
+
+localStorage.setItem(
+"history",
+JSON.stringify(history)
+);
+
+calculateStreak();
+renderGraph();
+
+alert("Today's Discovery Score Saved!");
+}
+
+function calculateStreak(){
+
+const history=
+JSON.parse(
+localStorage.getItem("history")
+)|| {};
+
+const streak=
+Object.keys(history).length;
+
+document.getElementById("streak")
+.innerText=streak;
+}
+
+function renderGraph(){
+
+const history=
+JSON.parse(
+localStorage.getItem("history")
+)|| {};
+
+const labels=
+Object.keys(history);
+
+const values=
+Object.values(history);
+
+if(chart){
+chart.destroy();
+}
+
+chart=new Chart(
+document.getElementById("historyChart"),
+{
+type:"line",
+
+data:{
+labels:labels,
+
+datasets:[{
+label:"Discovery Score",
+data:values,
+borderColor:"#38bdf8",
+backgroundColor:"rgba(56,189,248,.2)",
+fill:true,
+tension:.3
+}]
+}
+}
+);
+}
+
+const prompts=[
+
+"Which belief are you protecting right now?",
+
+"What would prove you wrong?",
+
+"What assumption are you making?",
+
+"What evidence are you ignoring?",
+
+"What would a genius question here?",
+
+"What if the opposite were true?",
+
+"What are you taking for granted?",
+
+"What unexpected explanation exists?"
+
+];
+
+function challengeAssumption(){
+
+const random=
+prompts[
+Math.floor(
+Math.random()*prompts.length
+)
+];
+
+document.getElementById("challenge")
+.innerText=random;
+}
+
+function saveJournal(){
+
+const date=
+new Date()
+.toISOString()
+.split("T")[0];
+
+const text=
+document.getElementById("journal")
+.value;
+
+localStorage.setItem(
+"journal-"+date,
+text
+);
+
+alert("Journal Saved!");
+}
+
+function downloadData(){
+
+const data={
+
+history:
+JSON.parse(
+localStorage.getItem("history")
+)|| {},
+
+personalBest:
+localStorage.getItem("personalBest")
+};
+
+const blob=
+new Blob(
+[
+JSON.stringify(data,null,2)
+],
+{
+type:"application/json"
+}
+);
+
+const a=
+document.createElement("a");
+
+a.href=
+URL.createObjectURL(blob);
+
+a.download=
+"discovery-lab-data.json";
+
+a.click();
+}
+
+q.addEventListener("input",calculate);
+p.addEventListener("input",calculate);
+k.addEventListener("input",calculate);
+a.addEventListener("input",calculate);
 
 calculate();
+calculateStreak();
+renderGraph();
 
 </script>
 
